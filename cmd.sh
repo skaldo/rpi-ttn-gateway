@@ -13,6 +13,13 @@ else
   fi
 fi
 
+if [ -z "$IMST_LORA_LITE" ]; then
+  echo "IMST_LORA_LITE env variable not set, not applying the SX1301 reset pin fix."
+else
+  echo "IMST_LORA_LITE env variable set. Applying the fix by commenting out the unexport SX1301 reset pin line."
+  sed -i -e "s/echo\s\"\$SX1301_RESET_BCM_PIN\"\s\s>\s\/sys\/class\/gpio\/unexport/#&/g" ./start.sh
+fi
+
 defaultRegion="EU"
 if [ -z "$GATEWAY_REGION" ]; then
   echo "GATEWAY_REGION env variable not set, using default region '$defaultRegion')"
